@@ -54,8 +54,9 @@ import { listVoiceProfiles } from '@botuyo/contracts'
 
 ## 5. Publicar y versionar
 
-- Semver. Publica CI (`.github/workflows/publish.yml`) al crear un **GitHub Release**, con el secret `NPM_TOKEN`.
-- Manual: `npm version patch && npm publish --access public`.
+- Semver. Publica CI (`.github/workflows/publish.yml`) **automáticamente** ante cualquier push a `main` que cambie `package.json`. Un *version guard* compara la versión local contra la de npm y publica solo si difieren → un bump de versión alcanza.
+- Auth por **OIDC trusted publishing** (sin `NPM_TOKEN`, sin secretos largos); la provenance se firma sola. Runner `ubuntu-latest` (obligatorio para provenance). Fallback manual: `workflow_dispatch`.
+- Para publicar: `npm version patch|minor|major && git push`.
 - **Regla de oro:** un cambio que rompe (rename/remove de un export) = **major**. Agregar = minor. Fix interno = patch.
 
 ## 6. Plan de migración
@@ -63,7 +64,7 @@ import { listVoiceProfiles } from '@botuyo/contracts'
 ### Fase 1 — Publicar (ahora)
 1. `cd botuyo-contracts && npm install && npm run build && npm run typecheck`.
 2. `git init` (identidad personal por `includeIf`), push a `github.com/MarcoAR1/botuyo-contracts`.
-3. Crear Release `v0.1.0` → CI publica `@botuyo/contracts@0.1.0`.
+3. Publicado `@botuyo/contracts@0.1.0` (primer publish con token efímero — npm no permite registrar un Trusted Publisher de un paquete inexistente). Luego: Trusted Publisher registrado en npmjs.com + token quitado del workflow → **OIDC puro**.
 
 ### Fase 2 — Cablear consumidores (bajo riesgo)
 Por cada front: `npm i @botuyo/contracts` y cambiar 1 línea:
@@ -102,5 +103,5 @@ Por cada front: `npm i @botuyo/contracts` y cambiar 1 línea:
 
 1. Crear/extender un módulo en `src/` (ej. `src/ai/models.ts`).
 2. Re-exportar desde `src/index.ts`.
-3. Bump de versión → publicar → bump de la dependencia en cada consumidor.
+3. Bump de versión y push → CI publica → bump de la dependencia en cada consumidor.
 4. Mantener **sin deps de runtime** y **sin secretos**. Si es privado o público-del-widget, no va acá.

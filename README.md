@@ -65,17 +65,24 @@ npm run typecheck
 
 ## Publishing
 
-Versioned with semver. Publishing runs in CI (`.github/workflows/publish.yml`) on a GitHub Release, using the `NPM_TOKEN` secret. Manual fallback:
+Versioned with semver. Publishing is **fully automated** by CI (`.github/workflows/publish.yml`):
+
+- **Trigger:** any push to `main` that changes `package.json`. A version guard compares the local version against the one on npm and publishes only when they differ — so a version bump is all you need.
+- **Auth:** [npm trusted publishing](https://docs.npmjs.com/trusted-publishers) via **OIDC** — no `NPM_TOKEN`, no long-lived secrets. Provenance is generated and signed automatically (proof the artifact came from this workflow).
+- **Runner:** `ubuntu-latest` (GitHub-hosted is required for provenance).
+- **Fallback:** the workflow also exposes `workflow_dispatch` for a manual re-run.
+
+To cut a release, just bump and push:
 
 ```bash
-npm version patch
-npm publish --access public
+npm version patch   # or minor / major
+git push            # CI publishes the new version
 ```
 
 ## Adding a contract
 
 1. Add/extend a module under `src/` (e.g. `src/ai/models.ts`).
 2. Re-export it from `src/index.ts`.
-3. Bump the version, publish, then bump the dependency in each consumer.
+3. Bump the version and push — CI publishes — then bump the dependency in each consumer.
 
 > Keep it **dependency-free at runtime** and **secret-free**. If something is private or widget-public, it does not belong here.
