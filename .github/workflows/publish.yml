@@ -38,11 +38,6 @@ jobs:
       - name: Build
         run: npm run build
 
-      # OIDC is auto-detected and preferred. NODE_AUTH_TOKEN is the ONE-TIME
-      # bootstrap fallback for the first publish (a trusted publisher cannot be
-      # configured on npmjs.com until the package exists). After the first
-      # release: configure the trusted publisher, then delete the `env:` block
-      # below and the NPM_TOKEN secret — publishes switch to OIDC automatically.
       - name: Publish if version changed
         shell: bash
         run: |
@@ -54,5 +49,3 @@ jobs:
           else
             echo "Version $LOCAL already published — skipped"
           fi
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
