@@ -1,0 +1,44 @@
+name: Publish to npm
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write # OIDC trusted publishing + automatic provenance
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+
+      # Trusted publishing (OIDC) requires npm >= 11.5.1
+      - name: Ensure latest npm
+        run: npm install -g npm@latest
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Build
+        run: npm run build
+
+      # OIDC is auto-detected and preferred. NODE_AUTH_TOKEN is the ONE-TIME
+      # bootstrap fallback for the first publish (a trusted publisher cannot be
+      # configured on npmjs.com until the package exists). After the first
+      # release: configure the trusted publisher, then delete the `env:` block
+      # below and the NPM_TOKEN secret — publishes switch to OIDC automatically.
+      - name: Publish
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

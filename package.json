@@ -1,0 +1,51 @@
+{
+  "name": "@botuyo/contracts",
+  "version": "0.1.0",
+  "description": "Shared TypeScript contracts (types & constants) for the BotUyo platform — AI models, voice profiles, REST envelope. Public, secret-free.",
+  "keywords": [
+    "botuyo",
+    "contracts",
+    "types",
+    "shared",
+    "ai-models",
+    "voice"
+  ],
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit",
+    "test": "tsc --noEmit",
+    "prepublishOnly": "npm run build"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "tsup": "^8.3.5",
+    "typescript": "^5.6.3"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MarcoAR1/botuyo-contracts.git"
+  },
+  "homepage": "https://botuyo.com",
+  "license": "MIT"
+}
