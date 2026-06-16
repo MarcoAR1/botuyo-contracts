@@ -1,9 +1,14 @@
 name: Publish to npm
 
 on:
-  release:
-    types: [published]
+  push:
+    branches: [main]
+    paths: ['package.json']
   workflow_dispatch:
+
+concurrency:
+  group: contracts-publish
+  cancel-in-progress: true
 
 permissions:
   contents: read
@@ -38,7 +43,16 @@ jobs:
       # configured on npmjs.com until the package exists). After the first
       # release: configure the trusted publisher, then delete the `env:` block
       # below and the NPM_TOKEN secret — publishes switch to OIDC automatically.
-      - name: Publish
-        run: npm publish --access public
+      - name: Publish if version changed
+        shell: bash
+        run: |
+          PUBLISHED=$(npm show @botuyo/contracts version 2>/dev/null || echo "0.0.0")
+          LOCAL=$(node -p "require('./package.json').version")
+          if [ "$LOCAL" != "$PUBLISHED" ]; then
+            npm publish --access public
+            echo "Published v$LOCAL to npm"
+          else
+            echo "Version $LOCAL already published — skipped"
+          fi
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
