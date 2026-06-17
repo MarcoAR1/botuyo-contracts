@@ -10,8 +10,15 @@
 export const AI_PROVIDERS = ['gemini', 'openai', 'claude', 'custom'] as const
 export type AIProvider = (typeof AI_PROVIDERS)[number]
 
-/** Gemini text models currently in use across the platform. */
+/**
+ * Gemini text models currently in use across the platform.
+ *
+ * The `*-preview` entries are frontier Gemini 3 models offered as opt-in choices
+ * in the admin panel; the stable defaults remain the non-preview ids.
+ */
 export const GEMINI_TEXT_MODELS = [
+  'gemini-3.1-pro-preview',
+  'gemini-3-flash-preview',
   'gemini-3.1-flash-lite',
   'gemini-2.5-flash-lite',
   'gemini-2.5-flash',
