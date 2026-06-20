@@ -4,14 +4,14 @@ Shared TypeScript **contracts** (types & constants) for the BotUyo platform. Pub
 
 ## Why this package exists
 
-The BotUyo system is split across independent repos (`botuyo-backend`, `botuyo-landing`, `botuyo-admin`, `botuyo-mcp`, `botuyo-kiosk`, `botuyo-widget-chatbot`). Without a shared package, the same contracts (model IDs, voice profiles, the REST envelope, the API base URL) were re-declared by hand in each one and drifted apart. This package centralizes them so a change happens **once**.
+The BotUyo system is split across several independent repositories (backend services, web apps, and developer tooling). Without a shared package, the same contracts (model identifiers, voice profiles, the REST envelope, the API base URL) were re-declared by hand in each one and drifted apart. This package centralizes them so a change happens **once**.
 
 ## What lives here (and what does NOT)
 
 | In this package | Why |
 | --- | --- |
-| Gemini/OpenAI model IDs + defaults + deprecation map | Hardcoded ~10x across repos |
-| Voice profile catalog (`VOICE_PROFILES`, `resolveVoiceProfile`) | Shared by backend, mcp, admin, landing |
+| AI text-model identifiers + defaults + deprecation map | Hardcoded ~10x across repos |
+| Voice profile catalog (`VOICE_PROFILES`, `resolveVoiceProfile`) | Shared by backend services and web apps |
 | REST envelope (`ApiResponse<T>`, `PaginatedData<T>`) | Every frontend reads `res.data.data` |
 | `DEFAULT_API_BASE_URL` | Hardcoded across all consumers |
 
