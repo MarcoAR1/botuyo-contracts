@@ -1,6 +1,6 @@
 {
   "name": "@botuyo/contracts",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Shared TypeScript contracts (types & constants) for the BotUyo platform — AI models, voice profiles, REST envelope. Public, secret-free.",
   "keywords": [
     "botuyo",

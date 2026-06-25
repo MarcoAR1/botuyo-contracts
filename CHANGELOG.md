@@ -12,6 +12,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0]
+
+### Added
+
+- **`copilot/proposal`** — shared "tool approval" contract for the Authenticated
+  Agents + Tool Approval capability, so `botuyo-landing` (which embeds the platform
+  widget for the recruiting copilot) and the backend share ONE definition:
+  - Types: `CopilotProposal` (`{ proposalId, tool, title?, summary?, args?, ownerOnly? }`),
+    `CopilotProposalStatus` (`'confirmed' | 'cancelled' | 'expired'`),
+    `CopilotProposalResolved`, and `CopilotAgentRef` (the `{ agentId, apiKey? }` handle
+    returned by `GET /api/recruiting/copilot/agent`).
+  - Auth prop types: `GetUserToken`, `OnAuthRequired`, `CopilotAuthProps`.
+  - Byte-compatible BY DESIGN with the widget's self-contained `tool_proposal` payload
+    (`ToolProposalData`) — the public widget keeps its own copy and does NOT depend on
+    this package.
+
 ## [0.2.0]
 
 ### Added

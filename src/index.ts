@@ -11,6 +11,7 @@
 
 export * from './ai/models'
 export * from './agents/export'
+export * from './copilot/proposal'
 export * from './voice/profiles'
 export * from './http/envelope'
 export * from './http/constants'
