@@ -22,7 +22,7 @@ Audit of the shared contracts package (`@botuyo/contracts`). Generated Jun 2026.
 
 | Pri | Count | Headline |
 |-----|-------|----------|
-| P2 | 2 | **Zero unit tests** for platform-wide helpers (`test` = `tsc --noEmit`); stale `NPM_TOKEN` secret after OIDC migration |
+| P2 | 1 | Stale `NPM_TOKEN` secret after OIDC migration (manual settings change) |
 | P3 | 2 | `ApiError` name overlaps the MCP client's `ApiError` class; `ApiResponse` could be a discriminated union |
 
 ## Method & confidence

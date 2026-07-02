@@ -12,6 +12,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Runtime test suite (Vitest).** The `test` script now runs real unit tests
+  (`vitest run`) instead of only typechecking. Specs cover every exported helper:
+  `resolveVoiceProfile`/`getVoiceProfile*`/`listVoiceProfiles` (id / display name /
+  Gemini name resolution + case tolerance) and `normalizeModel` / `isDeprecatedModel`
+  (every `DEPRECATED_MODEL_MAP` key maps to a live successor; passthrough of current
+  ids), plus `GEMINI_TEXT_MODELS` / `GEMINI_LIVE_MODELS` / `VOICE_PROFILES` invariants.
+  Guards against silent voice/model-resolution regressions across every consumer repo.
+
+### Changed
+
+- **CI gate.** `publish.yml` now runs `npm test` between typecheck and build, so a
+  failing helper spec blocks a publish. `typecheck` stays a separate script.
+
 ## [0.3.0]
 
 ### Added
