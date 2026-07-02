@@ -13,5 +13,6 @@
 - **Category:** security housekeeping
 - **Location:** GitHub repo settings (secret `NPM_TOKEN`) + npmjs token; `.github/workflows/publish.yml`
 - **Problem:** Publishing migrated to OIDC (trusted publisher), so the long-lived `NPM_TOKEN` is no longer needed. Leaving the secret + npmjs token alive is unnecessary standing credential risk.
-- **Fix:** Delete the `NPM_TOKEN` repo secret and revoke the token in npmjs; confirm `publish.yml` relies solely on OIDC (`id-token: write`).
-- **Confidence:** Med — **(verify)** the secret/token still exist and `publish.yml` is OIDC-only. **Effort:** XS (settings change, no code).
+- **Verified 2026-07:** `publish.yml` is already OIDC-only — `permissions: id-token: write` (line 15) + a bare `npm publish` with **no** `NODE_AUTH_TOKEN`/`NPM_TOKEN` anywhere. So the workflow needs no change.
+- **Fix (remaining — manual, out of repo):** Delete the `NPM_TOKEN` repo secret in GitHub settings and revoke the matching token in npmjs.
+- **Confidence:** High (workflow confirmed OIDC-only). **Effort:** XS (settings change, no code).
